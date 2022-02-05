@@ -1,0 +1,60 @@
+version: "3.8"
+services:
+  adminer:
+    image: adminer
+    depends_on:
+      - "db"
+    ports:
+      - 5050:8080
+    restart: unless-stopped
+
+  db:
+    container_name: mariadb
+    env_file: .env
+    image: mariadb:latest
+    ports:
+      - 3306:3306
+    restart: always
+    volumes:
+      - ./db.sql:/docker-entrypoint-initdb.d/db.sql
+
+  # ads:
+  #   build:
+  #     context: ./ads/Dockerfile
+  #   restart: always
+  #   depends_on:
+  #     - "db"
+  #   container_name: ads
+  #   ports:
+  #     - 8801:8081
+
+  # messages:
+  #   build:
+  #     context: ./messages/Dockerfile
+  #   restart: always
+  #   depends_on:
+  #     - "db"
+  #   container_name: messages
+  #   ports:
+  #     - 6001:6001
+
+  # transactions:
+  #   build:
+  #     context: ./transactions/
+  #   restart: always
+  #   depends_on:
+  #     - "db"
+  #   env_file: .env
+  #   container_name: transactions
+  #   ports:
+  #     - 5001:5001
+
+  # accounts:
+  #   build:
+  #     context: ./accounts/Dockerfile
+  #   restart: always
+  #   container_name: accounts
+  #   depends_on:
+  #     - "db"
+  #   ports:
+  #     - 3001:3001
